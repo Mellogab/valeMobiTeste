@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+		 	<meta="viewport" content="width=devide.width,initial-scale=1,height=device-height,target-densitydpi=device-dpi">
+	        <meta charset="utf-8">
+	        <link rel="stylesheet"  href="css/materialize.css">
+			<title>sisMercadoria</title>
+	</head>
+	<body >
+
+
+	  <nav>
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo right">sisMercadoria</a>
+        <ul>
+          <li><a href="index.html">Menu</a></li>  
+          <li><a href="buscaMercadoriaCompra.html">Compras</a></li>
+          <li><a href="buscaMercadoriaVenda.html">Vendas</a></li>
+          <li><a href="lista.html">Lista de Vendas</a></li>
+        </ul>
+        
+      </div>
+    </nav>
+        
+	   
+      <ul class="collection with-header">
+        <li class="collection-header"><h4>Lista de Operações - Compras</h4></li>
+        
+      
+
+      <table class="highlight" id="tabelaMercadoria">
+        <thead>
+          <tr>
+              <th data-field="id">Código da Venda</th>
+              <th data-field="name">Código da Mercadoria</th>
+              <th data-field="qtd">Quantidade</th>
+              
+          </tr>
+        </thead>
+
+        <tbody id="minhaTabela">
+          
+        </tbody>
+      </table>
+        
+      </ul>
+      
+       
+
+    	<script>
+        var xmlhttp = new XMLHttpRequest();
+        var url = "http://localhost:8084/webMercadoria/ws/mercadoria/listarCompras";
+        var mercadoriaId = 0;
+        var quantidadeMercadoria = 0;
+        
+          xmlhttp.onreadystatechange = function() {
+             if (this.readyState == 4 && this.status == 200) {
+                 var myArr = JSON.parse(this.responseText);
+                 myFunction(myArr);
+                 
+             }
+          };
+       
+            xmlhttp.open("GET", url, true);
+            xmlhttp.send();
+
+      
+        
+        function myFunction(arr) {
+            console.log(arr);
+            //alert(arr);
+            var itens = ""; 
+            //var out = '<table>';
+            var out = '';
+            var i;  
+             
+            for(i = 0; i < arr.length; i++) {
+                out+= ' <tr>';
+                out += '<td>' + arr[i].idCompra + '</td>';
+                out += '<td>' + arr[i].idMercadoria + '</td>';
+                out += '<td>' + arr[i].quantidade + '</td>';
+                
+                
+                out+= ' </tr>';
+            }
+            
+            document.getElementById("minhaTabela").innerHTML = out;;
+             
+        }
+            
+       
+    
+</script>
+       
+    	<script src="js/jquery-2.2.1.min.js" ></script>
+    	<script src="js/materialize.min.js" ></script>
+	</body>
+</html>

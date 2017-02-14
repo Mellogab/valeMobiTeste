@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+		 	<meta="viewport" content="width=devide.width,initial-scale=1,height=device-height,target-densitydpi=device-dpi">
+	        <meta charset="utf-8">
+	        <link rel="stylesheet"  href="css/materialize.css">
+			<title>sisMercadoria</title>
+	</head>
+	<body >
+
+
+	  <nav>
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo right">sisMercadoria</a>
+        <ul>
+          <li><a href="index.html">Menu</a></li>  
+          <li><a href="lista.html">Lista de Vendas</a></li>
+          <li><a href="listaOperacaoCompras.html">Lista de Compras</a></li>
+          <li><a href="buscaMercadoriaVenda.html">Vendas</a></li>
+        </ul>
+        
+      </div>
+    </nav>
+        
+	    <!-- Div para consultar os dados -->
+    	<div id="id01"></div>
+      <div  id="dadosMercadorias" class="collection"></div>
+
+      <table class="highlight" id="tabelaMercadoria">
+        <thead>
+          <tr>
+              <th data-field="id">Nome</th>
+              <th data-field="name">Preço</th>
+              <th data-field="qtd">Quantidade</th>
+              <th data-field="tipo">Tipo de Mercadoria</th>
+              <th data-field="tipo">Operação</th>
+          </tr>
+        </thead>
+
+        <tbody id="minhaTabela">
+          
+        </tbody>
+      </table>
+        <hr>
+        <form id="form1" class="col s12" method="POST" action="http://localhost:8084/webMercadoria/ws/mercadoria/efetuaCompra">
+          <div class="row">
+            <div class="input-field col s6">
+              Código da Mercadoria
+              <input placeholder="Código da Mercadoria"  name="idMercadoria" id="idMercadoria" type="text" class="validate">
+              
+            </div>
+            Quantidade
+            <div class="input-field col s6">
+              <input placeholder="Quantidade" name="quantidade" id="quantidade" type="text" class="validate">
+              
+            </div>
+          </div>
+          
+          <center>
+        
+        <input class="waves-effect waves-light btn-large" onclick="efetuaVenda()" type="submit" value="Finalizar Compras"/>
+          </center>
+        </form>
+
+    	<script>
+        var xmlhttp = new XMLHttpRequest();
+        var url = "http://localhost:8084/webMercadoria/ws/mercadoria/buscaMercadoriaCompra";
+        var mercadoriaId = 0;
+        var quantidadeMercadoria = 0;
+        var dados = "";
+          xmlhttp.onreadystatechange = function() {
+             if (this.readyState == 4 && this.status == 200) {
+                 var myArr = JSON.parse(this.responseText);
+                 dados = JSON.parse(this.responseText);
+                 myFunction(myArr);
+                 
+             }
+          };
+       
+            xmlhttp.open("GET", url, true);
+            xmlhttp.send();
+ 
+        function myFunction(arr) {
+            console.log(arr);
+            //alert(arr);
+            var itens = ""; 
+            //var out = '<table>';
+            var out = '';
+            var i;  
+             
+            for(i = 0; i < arr.length; i++) {
+                out+= ' <tr>';
+                out += '<td>' + arr[i].nome + '</td>';
+                out += '<td>' + arr[i].preco + '</td>';
+                out += '<td>' + arr[i].quantidade + '</td>';
+                out += '<td>' + arr[i].tipoMercadoria + '</td>';
+                
+              out += '<td> <button class="waves-effect waves-light btn" id='+arr[i].idMercadoria+' onclick="comprarMercadoria(this.id)">Comprar</button> </td>';
+                
+                out+= ' </tr>';
+            }
+            
+            document.getElementById("minhaTabela").innerHTML = out;;
+             
+        }
+            
+        function comprarMercadoria(id){
+            this.mercadoriaId = id;
+            
+            var qtde = 0;
+            quantidadeMercadoria = prompt ("Insira a quantidade");
+            //qtde = prompt ("Insira a quantidade");
+            document.getElementById('idMercadoria').value = this.mercadoriaId;
+            document.getElementById('quantidade').value = quantidadeMercadoria;
+
+        }
+     
+        function efetuaVenda(){
+          alert("Compra realizada com sucesso!");
+          window.location="index.html";
+        }
+    
+</script>
+       
+    	<script src="js/jquery-2.2.1.min.js" ></script>
+    	<script src="js/materialize.min.js" ></script>
+	</body>
+</html>
